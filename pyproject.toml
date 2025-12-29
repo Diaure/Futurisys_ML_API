@@ -1,0 +1,31 @@
+[project]
+name = "projet4"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Diane.Aurélie",email = "aurelie.gabu@gmail.com"}
+]
+readme = "README.md"
+requires-python = "^3.11"
+dependencies = [
+    "pandas ==2.2.3",
+    "numpy ==1.26.4",
+    "scikit-learn ==1.4.2",
+    "matplotlib ==3.8.4",
+    "seaborn ==0.13.2",
+    "scipy ==1.12.0",
+    "shap ==0.49.1",
+    "xgboost ==2.0.3",
+    "optuna ==3.6.1",
+    "category-encoders ==2.6.3",
+    "catboost ==1.2.7",
+    "numba ==0.59.1",
+    "llvmlite ==0.42.0",
+    "ipykernel>=6.25,<7.0"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
