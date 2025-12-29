@@ -1,0 +1,16 @@
+name: CI # nom affiché dans l’onglet Actions de GitHub sinon le workflow n'exécute rien
+
+on: # quand le pipeline doit s'exécuter, dans le projet:
+  push: 
+    branches:
+      - develop # le pipeline se lance quand on pousses sur develop
+      - feature/* # ou sur une branche
+  pull_request:
+    branches:
+      - develop # le pipeline se lance quand une pull request cible develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
