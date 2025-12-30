@@ -28,6 +28,20 @@ Le projet inclut :
 - Un pipeline **CI/CD** pour automatiser les tests et le déploiement
 - Une documentation technique claire
 
+## CI/CD et qualité du code
+
+Ce projet utilise une pipeline d’intégration continue (CI) via GitHub Actions.
+
+À chaque push sur les branches de travail et à chaque pull request vers `develop`,
+le pipeline exécute automatiquement les étapes suivantes :
+- installation d’un environnement Python 3.11 isolé
+- installation des dépendances définies dans le projet
+- exécution des tests unitaires via pytest
+
+L’objectif est de garantir que :
+- le projet reste installable
+- les transformations et composants critiques ne régressent pas
+- toute fusion vers la branche `develop` est validée automatiquement
 
 
 ## Stack technique
