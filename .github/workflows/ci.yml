@@ -1,0 +1,30 @@
+name: CI # nom affiché dans l’onglet Actions de GitHub sinon le workflow n'exécute rien
+
+on: # quand le pipeline doit s'exécuter, dans le projet:
+  push: 
+    branches:
+      - develop # le pipeline se lance quand on pousses sur develop
+      - feature/* # ou sur une branche feature
+  pull_request:
+    branches:
+      - develop # le pipeline se lance quand une pull request cible develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          pip install .
+          pip install pytest
+
+      - name: Run tests
+        run: pytest
+
