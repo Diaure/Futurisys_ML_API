@@ -22,8 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install ./projet4
-          pip intall -r requirement.txt
+          pip install .
           pip install pytest
 
       - name: Run tests
