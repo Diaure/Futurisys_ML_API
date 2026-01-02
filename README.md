@@ -18,7 +18,6 @@ versionnage, tests, base de données et automatisation.
 - Préparer une base solide pour un déploiement en production
 
 
-
 ## Périmètre fonctionnel
 Le projet inclut :
 - Une API développée avec **FastAPI**
@@ -40,9 +39,60 @@ le pipeline exécute automatiquement les étapes suivantes :
 
 L’objectif est de garantir que :
 - le projet reste installable
-- les transformations et composants critiques ne régressent pas
+- les transformations et composants (chargement du modèle, prédiction) ne régressent pas
 - toute fusion vers la branche `develop` est validée automatiquement
 
+## Architecture de l’API
+
+L’API est développée avec **FastAPI** et repose sur :
+- un schéma d’entrée validé avec **Pydantic**
+- un préprocesseur entraîné et sauvegardé
+- un modèle de machine learning sérialisé avec **joblib**
+
+Les artefacts du modèle sont stockés dans le dossier `App/model/` :
+- `preprocesseur_fitted.joblib`
+- `model_final_xgb.joblib`
+- `mapping_classes.json`
+
+## Lancer l’API en local
+
+Depuis la racine du projet :
+
+```bash
+uvicorn App.main:app --reload --log-level debug
+```
+L’API est alors accessible à l’adresse  http://127.0.0.1:8000/
+
+La documentation interactive à http://127.0.0.1:8000/docs
+
+### Endpoint principal
+`POST /predict`
+
+Cet endpoint reçoit les caractéristiques d’un employé et retourne :
+
+- une prédiction lisible ("Reste" ou "Part")
+- la probabilité associée au départ
+
+Exemple de réponse :
+```json
+{
+  "prediction": "Part",
+  "probabilite_depart": 0.79
+}
+```
+Les données d’entrée sont validées automatiquement avant l’appel au modèle,
+garantissant la cohérence avec les variables utilisées lors de l’entraînement.
+
+## Documentation des endpoints
+
+L’API expose un endpoint principal de prédiction.
+
+**POST /predict**
+  - Description : retourne une prédiction de départ d’un employé
+  - Validation des données : Pydantic
+  - Réponses possibles :
+    - 200 : prédiction valide
+    - 422 : données invalides
 
 ## Stack technique
 - **Langage** : Python
