@@ -76,8 +76,8 @@ Cet endpoint reçoit les caractéristiques d’un employé et retourne :
 Exemple de réponse :
 ```json
 {
-  "prediction": "Part",
-  "probabilite_depart": 0.79
+  "Prediction": "Part",
+  "Probabilite_depart": 0.795678996
 }
 ```
 Les données d’entrée sont validées automatiquement avant l’appel au modèle,
@@ -108,11 +108,23 @@ L’API expose un endpoint principal de prédiction.
 ## Structure du projet
 ```text
 futurisys_ml-api/
+├── github/workflows
+│   ├── ci.yml       # Description des évènement déclenchants des tests
 ├── app/             # Code applicatif principal
 │   ├── main.py      # Point d’entrée de l’API
+│   ├── predict.py   # Application du modèle
+│   ├── schemas.py   # Validation des données (Pydantic)
+│   ── model/                            # Elements du modèle
+│   ├── mapping_classes.json             # Correspondances des classes
+│   ├── modele_final_xgb.joblib          # Modèle final avec hyperparamètres
+│   ├── preprocesseur_fitted.joblib      # Pipeline entrainé
 |
-├── tests/           # Tests unitaires, fonctionnels
 ├── scripts/         # Scripts bd (BD, données)
-├── requirements.txt # Librairies env.
+├── tests/           # Tests unitaires, fonctionnels
+│   ├── test_api.py      # Test automatisé de l'API via Pytest
+|
+├── .gitignore       # Nettoyage du dépôt
+├── pyproject.toml   # Librairies des modules entrainement ML
 ├── README.md        # Présentation du projet
-└── .gitignore       # Nettoyage du dépôt
+└── requirements.txt # Librairies des modules dispensables API
+```
