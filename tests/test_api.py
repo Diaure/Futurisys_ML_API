@@ -40,5 +40,5 @@ def test_predict_endpoint():
     response = client.post("/predict", json = emp_caract)
 
     assert response.status_code == 200
-    assert "prediction" in response.json()
-    assert "probabilite_depart" in response.json()
+    assert "Prediction" in response.json()
+    assert "Probabilite_depart" in response.json()
