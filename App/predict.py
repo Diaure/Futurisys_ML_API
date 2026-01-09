@@ -2,16 +2,37 @@ import joblib
 import pandas as pd
 from App.schemas import EmployeeFeatures
 import json
+from pathlib import Path
+
+# Chemin des fichiers
+chemin_model = Path("App/model/modele_final_xgb.joblib")
+chemin_mapping = Path("App/model/mapping_classes.json")
+
+# Variables chargées
+model = None
+classes_mapping = None
+Features = list(EmployeeFeatures.model_fields.keys())
 
 
-model = joblib.load("App/model/modele_final_xgb.joblib")
+# Chargement des fichiers: fonction pour charger le modèle, le mapping afin de permettre à l'API de démarrer m^me si les éléments ne sont pas présents
+def files_load():
+    global model, classes_mapping
+    if model is None:
+        if not chemin_model.exists():
+            raise RuntimeError("Eléments du modèle introuvable.")
+        model =joblib.load(chemin_model)
 
-FEATURES = list(EmployeeFeatures.model_fields.keys())
-with open("App/model/mapping_classes.json") as f: 
-    CLASS_MAPPING = json.load(f)
+    if classes_mapping is None:
+        if not chemin_mapping.exists():
+            raise RuntimeError("Mapping des classes introuvable.")
+        with open(chemin_mapping) as f:
+            classes_mapping = json.load(f)
 
+# Fonction prédiction
 def predict_employee(data: dict):
-    df = pd.DataFrame([data])[FEATURES]
+    files_load()
+
+    df = pd.DataFrame([data])[Features]
 
     print("Colonnes API :", df.columns.tolist()) 
     print("Nombre colonnes API :", len(df.columns))
@@ -20,6 +41,6 @@ def predict_employee(data: dict):
     proba = model.predict_proba(df)[0][1]
 
     return {
-        "Prediction": CLASS_MAPPING[str(pred)],
+        "Prediction": classes_mapping[str(pred)],
         "Probabilite_depart": float(proba)
     }
