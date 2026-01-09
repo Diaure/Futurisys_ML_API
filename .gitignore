@@ -6,4 +6,4 @@ venv/
 .coverage
 *.joblib
 *.pkl
-App/model*.joblib
+App/model/*.joblib
