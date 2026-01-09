@@ -4,3 +4,6 @@ venv/
 .venv/
 .pytest_cache/
 .coverage
+*.joblib
+*.pkl
+App/model*.joblib
