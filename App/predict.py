@@ -3,15 +3,19 @@ import pandas as pd
 from App.schemas import EmployeeFeatures
 import json
 from pathlib import Path
+from huggingface_hub import hf_hub_download
+
+MODEL_REPO = "Diaure/Futurisys-Model"
 
 # Chemin des fichiers
-chemin_model = Path("App/model/modele_final_xgb.joblib")
-chemin_mapping = Path("App/model/mapping_classes.json")
+chemin_model = Path(hf_hub_download(repo_id=MODEL_REPO, filename="modele_final_xgb.joblib"))
+chemin_mapping = Path(hf_hub_download(repo_id=MODEL_REPO, filename="mapping_classes.json"))
 
 # Variables chargées
 model = None
 classes_mapping = None
 Features = list(EmployeeFeatures.model_fields.keys())
+
 
 
 # Chargement des fichiers: fonction pour charger le modèle, le mapping afin de permettre à l'API de démarrer m^me si les éléments ne sont pas présents
