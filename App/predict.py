@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from huggingface_hub import hf_hub_download
 
-MODEL_REPO = "Diaure/Futurisys-Model"
+MODEL_REPO = "Diaure/xgb_model"
 
 # Chemin des fichiers
 chemin_model = Path(hf_hub_download(repo_id=MODEL_REPO, filename="modele_final_xgb.joblib"))
