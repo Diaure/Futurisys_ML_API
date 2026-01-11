@@ -20,6 +20,7 @@ jobs:
 
       - uses: actions/checkout@v4
 
+<<<<<<< HEAD
       - name: Install Poetry 
         run: pip install poetry 
       
@@ -28,6 +29,13 @@ jobs:
         
       - name: Run tests 
         run: poetry run pytest
+=======
+      - name: Install dependencies
+        run: |
+          pip install .
+          pip install -r requirements.txt
+          pip install pytest
+>>>>>>> fc539b23b8706255fb5b2ad6d1e6a8bae3b8fb2f
 
       - name: Run tests
         run: pytest
