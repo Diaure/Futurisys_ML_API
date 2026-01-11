@@ -8,10 +8,13 @@ app = FastAPI(
     version="0.1.0"
 )
 
+<<<<<<< HEAD
 @app.get("/") 
 def root(): 
     return {"status": "API OK"}
 
+=======
+>>>>>>> fc539b23b8706255fb5b2ad6d1e6a8bae3b8fb2f
 @app.post("/predict")
 def predict(data: EmployeeFeatures):
     """
