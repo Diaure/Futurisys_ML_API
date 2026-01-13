@@ -4,3 +4,7 @@ venv/
 .venv/
 .pytest_cache/
 .coverage
+App/model/
+App/model/modele_final_xgb.joblib
+*.joblib
+*.json
