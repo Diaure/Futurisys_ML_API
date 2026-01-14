@@ -1,3 +1,13 @@
+---
+title: Futurisys ML API
+emoji: 🚀
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
+
 # Futurisys – Déploiement d’un modèle de Machine Learning via API
 
 ## Contexte
@@ -27,45 +37,67 @@ Le projet inclut :
 - Un pipeline **CI/CD** pour automatiser les tests et le déploiement
 - Une documentation technique claire
 
-## CI/CD et qualité du code
+## CI/CD et Déploiement
 
-Ce projet utilise une pipeline d’intégration continue (CI) via GitHub Actions.
+Ce projet met en œuvre une approche CI/CD complète, séparant:
+- l’intégration continue (**CI**): garantir la qualité du code
+- le déploiement continu (**CD**): rendre l’API accessible publiquement
 
-À chaque push sur les branches de travail et à chaque pull request vers `develop`,
+### `Intégration Continue (CI) – GitHub Actions`
+
+L’intégration continue est assurée via GitHub Actions.
+
+À chaque **push** sur les branches de travail et à chaque **pull request** vers **`develop`**,
 le pipeline exécute automatiquement les étapes suivantes :
 - installation d’un environnement Python 3.11 isolé
 - installation des dépendances définies dans le projet
-- exécution des tests unitaires via pytest
+- exécution des tests automatisés avec Pytest
 
-L’objectif est de garantir que :
-- le projet reste installable
-- les transformations et composants (chargement du modèle, prédiction) ne régressent pas
-- toute fusion vers la branche `develop` est validée automatiquement
+L’objectif est de:
+- vérifier que le projet est installable
+- garantir que l’API démarre correctement
+- valider le chargement du modèle et le endpoint /*`predict`*
+- éviter toute régression avant fusion vers **`develop`**.
 
-## Architecture de l’API
+### `Déploiement Continu (CD) – Hugging Face Spaces`
 
-L’API est développée avec **FastAPI** et repose sur :
-- un schéma d’entrée validé avec **Pydantic**
-- un préprocesseur entraîné et sauvegardé
-- un modèle de machine learning sérialisé avec **joblib**
+Le déploiement de l’API est réalisé sur Hugging Face Spaces qui permet:
 
-Les artefacts du modèle sont stockés dans le dossier `App/model/` :
-- `preprocesseur_fitted.joblib`
-- `model_final_xgb.joblib`
-- `mapping_classes.json`
+- d’héberger gratuitement des applications ML
+- de déployer une API Dockerisée
+- d’exposer un service accessible publiquement sans gérer de serveur
 
-## Lancer l’API en local
+Dans ce projet, Hugging Face est utilisé comme plateforme de démonstration et de mise à disposition de l’API.
 
-Depuis la racine du projet :
+Le déploiement repose sur un Dockerfile, qui définit :
+- l’image Python utilisée (Python 3.11)
+- l’installation des dépendances
+- le lancement de l’API avec Uvicorn
 
-```bash
-uvicorn App.main:app --reload --log-level debug
-```
-L’API est alors accessible à l’adresse  http://127.0.0.1:8000/
+Il garantit la reproductibilité de l'environnement lors de l'exécution de l'API.
 
-La documentation interactive à http://127.0.0.1:8000/docs
+A noter que les ***fichiers binaires*** ne sont pas stochés dans le dépôt GiHub principal pour les raisons suivantes:
+- Hugging Face bloque les push Git contenant des fichiers binaires lourds
+- Git n’est pas conçu pour versionner des artefacts ML volumineux.
 
-### Endpoint principal
+Pour contourner la situation, dans le projet, les artefacts sont stockés dans un Space Hugging Face dédié, séparé du code. Lors du démarrage de lAPI:
+- le code télécharge dynamiquement les artefacts via huggingface_hub
+- l’API peut démarrer même si les fichiers ne sont pas présents localement
+
+
+### `Lancer l’API en local`
+
+L’API est déployée publiquement sur Hugging Face Spaces.
+
+- URL de l’API :
+https://diaure-futurisys-ml-api.hf.space
+- Documentation interactive (Swagger UI) :
+https://diaure-futurisys-ml-api.hf.space/docs. Ele permet de:
+  - visualiser les endpoints
+  - tester directement l’endpoint `/predict`
+  - voir les schémas d’entrée et de sortie.
+
+### `Endpoint principal`
 `POST /predict`
 
 Cet endpoint reçoit les caractéristiques d’un employé et retourne :
@@ -83,7 +115,7 @@ Exemple de réponse :
 Les données d’entrée sont validées automatiquement avant l’appel au modèle,
 garantissant la cohérence avec les variables utilisées lors de l’entraînement.
 
-## Documentation des endpoints
+### `Documentation des endpoints`
 
 L’API expose un endpoint principal de prédiction.
 
@@ -100,7 +132,7 @@ L’API expose un endpoint principal de prédiction.
 - **Machine Learning** : scikit-learn
 - **Base de données** : PostgreSQL
 - **Tests** : Pytest, pytest-cov
-- **CI/CD** : GitHub Actions
+- **CI/CD** : GitHub Actions, Hugging Face
 - **Versionnage** : Git / GitHub
 
 
@@ -121,10 +153,12 @@ futurisys_ml-api/
 |
 ├── scripts/         # Scripts bd (BD, données)
 ├── tests/           # Tests unitaires, fonctionnels
-│   ├── test_api.py      # Test automatisé de l'API via Pytest
+│   ├── test_api.py  # Test automatisé API Pytest
 |
 ├── .gitignore       # Nettoyage du dépôt
-├── pyproject.toml   # Librairies des modules entrainement ML
+├── Dockerfile       # Reproduction du dépôt
+├── poetry.lock      # Nettoyage du dépôt
+├── pyproject.toml   # Librairies dépendances ML
 ├── README.md        # Présentation du projet
-└── requirements.txt # Librairies des modules dispensables API
+└── requirements.txt # Librairies dépendances API
 ```
