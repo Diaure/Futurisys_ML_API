@@ -16,16 +16,15 @@ jobs:
     steps:
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.11.9"
 
       - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          pip install .
-          pip install -r requirements.txt
-          pip install pytest
-
-      - name: Run tests
-        run: pytest
-
+      - name: Install Poetry 
+        run: pip install poetry 
+      
+      - name: Install dependencies with Poetry 
+        run: poetry install --no-interaction --no-root 
+        
+      - name: Run tests 
+        run: poetry run pytest
