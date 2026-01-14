@@ -10,7 +10,6 @@ class EmployeeFeatures(BaseModel):
     heure_supplementaires: bool
     evolution_cat_evol: str
     categorie_employe: str
-
     satisfaction_employee_nature_travail: int
     nombre_participation_pee: int
     ecart_note_evaluation: int
