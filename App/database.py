@@ -7,8 +7,7 @@ load_dotenv()
 
 # Détection si on est en CI (GitHub Actions) ou en test 
 IS_CI = os.getenv("CI") == "true"
-IS_PYTEST = "pytest" in os.getenv("PYTHONPATH", "") or 
-os.getenv("PYTEST_CURRENT_TEST") is not None 
+IS_PYTEST = "pytest" in os.getenv("PYTHONPATH", "") or os.getenv("PYTEST_CURRENT_TEST") is not None 
 
 SKIP_DB = IS_CI or IS_PYTEST
 
