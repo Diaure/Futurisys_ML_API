@@ -24,7 +24,8 @@ dependencies = [
     "ipykernel>=6.25,<7.0",
     "huggingface-hub ==1.3.1",
     "fastapi ==0.115.0",
-    "uvicorn ==0.30.1"
+    "uvicorn ==0.30.1",
+    "dotenv ==1.2.1"
 ]
 
 [build-system]
