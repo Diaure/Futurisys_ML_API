@@ -46,7 +46,7 @@ Ce projet met en œuvre une approche CI/CD complète, séparant:
 L’intégration continue est assurée via GitHub Actions.
 
 À chaque **push** sur les branches de travail et à chaque **pull request** vers **`develop`**,
-le pipeline exécute automatiquement les étapes suivantes:
+le pipeline exécute automatiquement les étapes suivantes :
 - installation d’un environnement Python 3.11 isolé
 - installation des dépendances définies dans le projet
 - exécution des tests automatisés avec Pytest
@@ -67,7 +67,7 @@ Le déploiement de l’API est réalisé sur Hugging Face Spaces qui permet:
 
 Dans ce projet, Hugging Face est utilisé comme plateforme de démonstration et de mise à disposition de l’API.
 
-Le déploiement repose sur un Dockerfile, qui définit:
+Le déploiement repose sur un Dockerfile, qui définit :
 - l’image Python utilisée (Python 3.11)
 - l’installation des dépendances
 - le lancement de l’API avec Uvicorn
@@ -255,7 +255,9 @@ futurisys_ml-api/
 |
 ├── .env             # Stockage des variables sensibles et de configuration
 ├── .gitignore       # Nettoyage du dépôt
-├── pyproject.toml   # Librairies des modules entrainement ML
+├── Dockerfile       # Reproduction du dépôt
+├── poetry.lock      # Nettoyage du dépôt
+├── pyproject.toml   # Librairies dépendances ML
 ├── README.md        # Présentation du projet
-└── requirements.txt # Librairies des modules dispensables API
+└── requirements.txt # Librairies dépendances API
 ```
