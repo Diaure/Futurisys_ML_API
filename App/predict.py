@@ -3,10 +3,9 @@ import pandas as pd
 from App.schemas import EmployeeFeatures
 import json
 from pathlib import Path
+from huggingface_hub import hf_hub_download
 
-# Chemin des fichiers
-chemin_model = Path("App/model/modele_final_xgb.joblib")
-chemin_mapping = Path("App/model/mapping_classes.json")
+MODEL_REPO = "Diaure/xgb_model"
 
 # Variables chargées
 model = None
@@ -14,17 +13,21 @@ classes_mapping = None
 Features = list(EmployeeFeatures.model_fields.keys())
 
 
+
 # Chargement des fichiers: fonction pour charger le modèle, le mapping afin de permettre à l'API de démarrer m^me si les éléments ne sont pas présents
 def files_load():
     global model, classes_mapping
+
     if model is None:
-        if not chemin_model.exists():
-            raise RuntimeError("Eléments du modèle introuvable.")
+        chemin_model = Path(hf_hub_download(repo_id=MODEL_REPO, filename="modele_final_xgb.joblib"))
+        # if not chemin_model.exists():
+        #     raise RuntimeError("Eléments du modèle introuvable.")
         model =joblib.load(chemin_model)
 
     if classes_mapping is None:
-        if not chemin_mapping.exists():
-            raise RuntimeError("Mapping des classes introuvable.")
+        chemin_mapping = Path(hf_hub_download(repo_id=MODEL_REPO, filename="mapping_classes.json"))
+        # if not chemin_mapping.exists():
+        #     raise RuntimeError("Mapping des classes introuvable.")
         with open(chemin_mapping) as f:
             classes_mapping = json.load(f)
 
