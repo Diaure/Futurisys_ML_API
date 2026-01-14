@@ -46,26 +46,27 @@ def predict_employee(data: dict):
     pred = model.predict(df)[0]
     proba = model.predict_proba(df)[0][1]
 
-    db: Session = SessionLocal()
+    db: Session = SessionLocal() if SessionLocal is not None else None
 
-    try:
-        # enregistrer les inputs: à chaque appel de POST/predict, on stocke d'abord les entrées de l'utilisateur
-        input_row = Input(**data) 
-        db.add(input_row) 
-        db.commit() 
-        db.refresh(input_row)
+    if db is not None:
+        try:
+            # enregistrer les inputs: à chaque appel de POST/predict, on stocke d'abord les entrées de l'utilisateur
+            input_row = Input(**data) 
+            db.add(input_row) 
+            db.commit() 
+            db.refresh(input_row)
 
-        # puis on récupère les ids générés automatiquement et enregistre les prédictions liés aux ids
-        pred_row = Predictions(input_id = input_row.id, prediction_label = classes_mapping[str(pred)], prediction_proba = float(proba), model_version = "v1") 
-        db.add(pred_row) 
-        db.commit()
-    
-    except Exception as e: 
-        print("🔥 ERREUR DB :", e) 
-        raise e
+            # puis on récupère les ids générés automatiquement et enregistre les prédictions liés aux ids
+            pred_row = Predictions(input_id = input_row.id, prediction_label = classes_mapping[str(pred)], prediction_proba = float(proba), model_version = "v1") 
+            db.add(pred_row) 
+            db.commit()
+        
+        except Exception as e: 
+            print("🔥 ERREUR DB :", e) 
+            raise e
 
-    finally:
-        db.close()
+        finally:
+            db.close()
 
     # puis on renvoie la réponse API
     return {
