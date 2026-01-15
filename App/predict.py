@@ -4,8 +4,16 @@ from App.schemas import EmployeeFeatures
 import json
 from pathlib import Path
 from huggingface_hub import hf_hub_download
-from sqlalchemy.orm import Session
-from App.database import SessionLocal
+
+
+# Import SQLAlchemy uniquement si disponible 
+try: 
+    from sqlalchemy.orm import Session 
+    SQLALCHEMY_AVAILABLE = True 
+except ModuleNotFoundError: 
+    SQLALCHEMY_AVAILABLE = False 
+    
+from App.database import SessionLocal 
 from App.model import Input, Predictions
 
 MODEL_REPO = "Diaure/xgb_model"
@@ -14,7 +22,6 @@ MODEL_REPO = "Diaure/xgb_model"
 model = None
 classes_mapping = None
 Features = list(EmployeeFeatures.model_fields.keys())
-
 
 
 # Chargement des fichiers: fonction pour charger le modèle, le mapping afin de permettre à l'API de démarrer m^me si les éléments ne sont pas présents
@@ -46,7 +53,10 @@ def predict_employee(data: dict):
     pred = model.predict(df)[0]
     proba = model.predict_proba(df)[0][1]
 
-    db: Session = SessionLocal() if SessionLocal is not None else None
+    # DB désactivée si SQLAlchemy indisponible ou SessionLocal = None 
+    if SQLALCHEMY_AVAILABLE and SessionLocal is not None:
+        db: Session = SessionLocal() 
+    else: db = None
 
     if db is not None:
         try:
@@ -62,7 +72,7 @@ def predict_employee(data: dict):
             db.commit()
         
         except Exception as e: 
-            print("🔥 ERREUR DB :", e) 
+            print("ERREUR DB:", e) 
             raise e
 
         finally:
