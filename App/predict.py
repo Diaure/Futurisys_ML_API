@@ -9,12 +9,15 @@ from huggingface_hub import hf_hub_download
 # Import SQLAlchemy uniquement si disponible 
 try: 
     from sqlalchemy.orm import Session 
+    from App.database import SessionLocal 
+    from App.model import Input, Predictions
     SQLALCHEMY_AVAILABLE = True 
 except ModuleNotFoundError: 
     SQLALCHEMY_AVAILABLE = False 
+    essionLocal = None 
+    Input = None 
+    Predictions = None
     
-from App.database import SessionLocal 
-from App.model import Input, Predictions
 
 MODEL_REPO = "Diaure/xgb_model"
 
