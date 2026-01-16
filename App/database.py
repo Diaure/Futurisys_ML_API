@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-from sqlalchemy.orm import sessionmaker, declarative_base
 
 # Tentative d'import SQLAlchemy uniquement si disponible 
 try: 
