@@ -28,7 +28,7 @@ jobs:
         run: poetry install --no-interaction --no-root 
       
       - name: Run unit tests with coverage 
-        run: poetry run pytest tests/unit --cov=App --cov-report=xml --cov-report=term-missing 
+        run: poetry run pytest tests/units --cov=App --cov-report=xml --cov-report=term-missing 
 
       - name: Run tests 
         run: poetry run pytest
