@@ -8,3 +8,4 @@ App/model/
 *.joblib
 *.json
 App/model/modele_final_xgb.joblib
+Other

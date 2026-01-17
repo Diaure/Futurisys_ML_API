@@ -6,7 +6,7 @@ authors = [
     {name = "Diane.Aurélie",email = "aurelie.gabu@gmail.com"}
 ]
 readme = "README.md"
-requires-python = "3.11.9"
+requires-python = ">=3.11,<3.12"
 dependencies = [
     "pandas ==2.2.3",
     "numpy ==1.26.4",
@@ -26,7 +26,8 @@ dependencies = [
     "fastapi ==0.115.0",
     "uvicorn ==0.30.1",
     "python-dotenv ==1.2.1",
-    "psycopg2-binary ==2.9.11"
+    "psycopg2-binary ==2.9.11",
+    "pytest-cov ==7.0.0"
 ]
 
 [build-system]
@@ -35,5 +36,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "9.0.2"
+pytest-cov = "^7.0.0"
 
 
