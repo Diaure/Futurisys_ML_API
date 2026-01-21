@@ -20,17 +20,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
-          pip install huggingface_hub[cli]
+          pip install --upgrade pip huggingface-cli
 
       - name: Check HF CLI 
-        run: python -m huggingface_hub.cli --version
+        run: huggingface-cli --version
 
       - name: Deploy to Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          python -m huggingface_hub.cli repo upload . \
+          huggingface-cli repo upload . \
             --repo-type space \
             --repo-id Diaure/Futurisys_API_ML \
             --token "$HF_TOKEN" \
