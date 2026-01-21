@@ -1,7 +1,7 @@
 name: CD to Hugging Face
 
 on: # quand le pipeline doit s'exécuter, dans le projet:
-  push: 
+  pull_request: 
     branches:
       - main
 
