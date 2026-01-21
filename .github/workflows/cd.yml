@@ -1,0 +1,49 @@
+name: CD to Hugging Face
+
+on:
+   push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install huggingface_hub
+
+      - name: Check HF CLI 
+        run: huggingface-cli --version
+
+      - name: Deploy to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          huggingface-cli repo upload . \
+            --repo-type space \
+            --repo-id Diaure/Futurisys_API_ML \
+            --token "$HF_TOKEN" \
+            --commit-message "CD: update from GitHub main"
+ 
+      - name: Test FastAPI app import
+        run: |
+          python - << 'EOF'
+          from App.main import app
+          assert app is not None
+          print("FastAPI app loaded successfully")
+          EOF
+
+      - name: Run tests
+        run: pytest -q
+
