@@ -20,8 +20,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip 
-          pip install  huggingface_hub
+          python -m pip install --upgrade pip 
+          python -m pip install  huggingface_hub
 
       - name: Check HF CLI 
         run: huggingface-cli
@@ -30,9 +30,10 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          huggingface-cli repo upload . \
-            --repo-type space \
-            --repo-id Diaure/Futurisys_API_ML \
-            --token "$HF_TOKEN" \
-            --commit-message "CD: update from GitHub main"
+          python - << 'EOF'
+          from huggingface_hub import HfApi
+          api = HfApi(token="${HF_TOKEN}")
+          api.upload_folder(folder_path=".", repo_id="Diaure/Futurisys_API_ML", repo_type="space",
+          commit_message="CD: update from GitHub main")
+          EOF
 
