@@ -19,7 +19,7 @@ jobs:
             
             - name: Install dependencies 
               run: | 
-                    pip install
+                    pip install -r requirements.txt
                     pip install huggingface_hub 
             - name: Push to Hugging Face Space 
               env: 
