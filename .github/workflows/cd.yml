@@ -1,0 +1,32 @@
+name: CD to Hugging Face
+
+on: # quand le pipeline doit s'exécuter, dans le projet:
+  push: 
+    branches:
+      - main
+
+jobs: 
+    deploy: 
+        runs-on: ubuntu-latest 
+        steps: 
+            - name: Checkout repository 
+              uses: actions/checkout@v4 
+            
+            - name: Set up Python 
+              uses: actions/setup-python@v5 
+              with: 
+                python-version: "3.11" 
+            
+            - name: Install dependencies 
+              run: | 
+                    pip install
+                    pip install huggingface_hub 
+            - name: Push to Hugging Face Space 
+              env: 
+                HF_TOKEN: ${{ secrets.HF_TOKEN }} 
+              run: | 
+                huggingface-cli repo upload \ 
+                    --repo-type space \ 
+                    --repo-id Diaure/Futurisys_API_ML \ 
+                    --token "$HF_TOKEN" \ . \ 
+                    --commit-message "CD: update from GitHub main"

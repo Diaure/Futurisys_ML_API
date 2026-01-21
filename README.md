@@ -327,8 +327,12 @@ Dans ce projet, le pipeline CI désactive la base de données, ainsi il n'y a pa
 - les insertions
 - les interactions **SQLALCHEMY**.
 Donc toutes les lignes liées à la DB ne sont pas exécutées, d'où il peut être observé une `couverture plus faible GitHub Actions vs local`.
+Par exemple pour les tests unitaires:
+```python
+poetry run pytest tests/units --cov=App --cov-report=xml --cov-report=term-missing
+```
 ```text
-============================== local tests coverage =====================================
+========================= local tests units coverage ============================
 
 Name              Stmts   Miss  Cover   Missing
 -----------------------------------------------
@@ -340,7 +344,7 @@ App\schemas.py       32      0   100%
 -----------------------------------------------
 TOTAL               167     16    90%
 
-========================== GitHub Actions tests coverage ================================
+====================== GitHub Actions tests units coverage =======================
 Name              Stmts   Miss  Cover   Missing
 -----------------------------------------------
 App/database.py      25     10    60%   9-10, 23-32
