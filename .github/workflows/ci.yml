@@ -31,7 +31,15 @@ jobs:
         run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 
       - name: Run unit tests with coverage 
-        run: poetry run pytest tests/units --cov=App --cov-report=xml --cov-report=term-missing 
+        run: poetry run pytest tests/units --cov=App --cov-report=xml --cov-report=term-missing
+        
+      - name: Test FastAPI app import
+        run: |
+          python - << 'EOF'
+          from App.main import app
+          assert app is not None
+          print("FastAPI app loaded successfully")
+          EOF
 
   functional-tests: 
     name: Tests fonctionnels API 
@@ -42,7 +50,7 @@ jobs:
       - uses: actions/checkout@v4 
       - uses: actions/setup-python@v5 
         with: 
-          python-version: "3.11" 
+          python-version: "3.11.9" 
         
       - name: Install Poetry 
         run: pip install poetry 
