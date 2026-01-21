@@ -371,28 +371,22 @@ L’architecture du projet repose sur une séparation claire des responsabilité
                           │        Utilisateur           │
                           │         (Client)             │
                           └───────────────┬──────────────┘
-                                          │  Requête POST /predict
+                                          │  
                                           ▼
-                          ┌──────────────────────────────┐
-                          │        API FastAPI           │
-                          │         (main.py)            │
-                          └───────────────┬──────────────┘
-                                          │
-                                          ▼
-                          ┌──────────────────────────────────┐
-                          │        Module de prédiction      │
-                          │            (predict.py)          │
-                          │  - Chargement du modèle HF Hub   │
-                          │  - Validation                    │
-                          │  - Prédiction                    │
-                          └───────────────┬──────────────────┘
-                                          │
-                                          ▼
-                          ┌────────────────────────────────────────┐
-                          │        Base de données PostgreSQL      │
-                          │   (inputs / predictions / dataset)     │
-                          └────────────────────────────────────────┘
-
+                    ┌────────────────────────────────────────────┐
+                    │               API FastAPI                  │
+                    │         (endpoint - POST /predict)         │
+                    └┬────────────────────┬─────────────────────┬┘
+                     |                    │                     |             
+                     ▼                    ▼                     ▼
+        ┌────────────────┐     ┌──────────────┐   ┌───────────────────────────┐     
+        │ Vérification & |     | Modèle ML    |   | Base PostgreSQL (stockage)| 
+        |    Validation  │     | - Chargement |   | - Inputs                  |
+        |                |     | - Prédiction |   | - Prédictions             |
+        └────────────────┘     └──────────────┘   └───────────────────────────┘            
+                                           ▲
+                                           | 
+                                           |                 
                           ┌────────────────────────────────────────┐
                           │      CI/CD – GitHub Actions            │
                           │  - Tests unitaires                     │
