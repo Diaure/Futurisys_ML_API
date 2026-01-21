@@ -81,7 +81,7 @@ Ce choix est justifié par:
 - un compromis efficace entre précision et capacité de généralisation
 - un temps d’inférence compatible avec une exposition via API
 
-![image](Other\comp_modeles.PNG)
+![Comparaison des modèles](https://raw.githubusercontent.com/Diaure/Futurisys_ML_API/develop/Other/comp_modeles.PNG)
 
 ### `Sérialisation et versionnage`
 
