@@ -21,13 +21,13 @@ jobs:
               run: | 
                 pip install -r requirements.txt
                 pip install huggingface_hub
-                
+
             - name: Push to Hugging Face Space 
               env: 
                 HF_TOKEN: ${{ secrets.HF_TOKEN }} 
               run: | 
-                huggingface-cli repo upload \ 
-                    --repo-type space \ 
-                    --repo-id Diaure/Futurisys_API_ML \ 
-                    --token "$HF_TOKEN" \ . \ 
+                huggingface-cli repo upload . \
+                    --repo-type space \
+                    --repo-id Diaure/Futurisys_API_ML \
+                    --token "$HF_TOKEN" \
                     --commit-message "CD: update from GitHub main"
