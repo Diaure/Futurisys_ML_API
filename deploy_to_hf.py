@@ -8,5 +8,6 @@ api.upload_folder(
     repo_id="Diaure/Futurisys_API_ML",
     repo_type="space",
     token=os.environ["HF_TOKEN"],
-    commit_message="CD: update from GitHub main"
-)
+    commit_message="CD: update from GitHub main",
+    ignore_patterns=[".git/*", ".github/*", "tests/*", "__pycache__/*", 
+                     "*.pyc", ".venv/*", "venv/*" ])
