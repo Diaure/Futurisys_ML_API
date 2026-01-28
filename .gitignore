@@ -9,3 +9,4 @@ App/model/
 *.json
 App/model/modele_final_xgb.joblib
 coverage.xml
+htmlcov
