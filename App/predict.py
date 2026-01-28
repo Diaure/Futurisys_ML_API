@@ -85,3 +85,5 @@ def predict_employee(data: dict):
     return {
         "Prediction": classes_mapping[str(pred)],
         "Probabilite_depart": float(proba)}
+
+
