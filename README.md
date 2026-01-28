@@ -35,6 +35,62 @@ Le projet inclut:
 - Un pipeline **CI/CD** pour automatiser les tests et le déploiement
 - Une documentation technique centralisée dans ce README
 
+
+## Architecture du projet
+
+L’architecture du projet repose sur une séparation claire des responsabilités afin de garantir la lisibilité, la maintenabilité et l’évolutivité de l’application.
+
+### `Vue d’ensemble`
+
+                          ┌──────────────────────────────┐
+                          │        Utilisateur           │
+                          │         (Client)             │
+                          └───────────────┬──────────────┘
+                                          │  
+                                          ▼
+                    ┌────────────────────────────────────────────┐
+                    │               API FastAPI                  │
+                    │         (endpoint - POST /predict)         │
+                    └┬────────────────────┬─────────────────────┬┘
+                     |                    │                     |             
+                     ▼                    ▼                     ▼
+        ┌────────────────┐     ┌──────────────┐   ┌───────────────────────────┐     
+        │ Vérification & |     | Modèle ML    |   | Base PostgreSQL (stockage)| 
+        |    Validation  │     | - Chargement |   | - Inputs                  |
+        |                |     | - Prédiction |   | - Prédictions             |
+        └────────────────┘     └──────────────┘   └───────────────────────────┘            
+                                           ▲
+                                           | 
+                                           |                 
+                          ┌────────────────────────────────────────┐
+                          │      CI/CD – GitHub Actions            │
+                          │  - Tests unitaires                     │
+                          │  - Tests fonctionnels                  │
+                          │  - Rapport de couverture               │
+                          │  - Déploiement sur HF Space            │
+                          └────────────────────────────────────────┘
+
+### `Description du flux`
+
+1. Un utilisateur envoie une requête `POST /predict` à l’API
+
+2. L’API FastAPI agit comme point d’entrée:
+   - validation des données via **Pydantic**
+   - orchestration du traitement
+
+3. Le module de prédiction:
+   - charge dynamiquement le modèle ML depuis **Hugging Face Hub**
+   - génère la prédiction et la probabilité associée
+
+4. Les données d’entrée et les résultats sont enregistrés dans une base **PostgreSQL** afin d’assurer la traçabilité
+
+5. La réponse est retournée au client sous forme JSON
+
+6. Le cycle de développement, de test et de déploiement est automatisé via un pipeline **CI/CD GitHub Actions** avec déploiement sur **Hugging Face Spaces**.
+
+Cette architecture permet une exposition fiable du modèle de Machine Learning, tout en respectant les bonnes pratiques MLOps et d’ingénierie logicielle.
+
+
 ## Modèle de Machine Learning (ML)
 ### `Problématique`
 Le modèle vise à résoudre un problème de classification binaire :
@@ -319,18 +375,9 @@ Il a pour rôle:
 - d'évaluer la qualité de la suite de tests
 - d'identifier les zones non testées
 - de réduire les risques de régression
-- de garantir la fiabilité du code avant déploiement
-- de donner un indicateur objectif de maturité logicielle.
+- de garantir la fiabilité du code avant déploiement.
 
-Dans ce projet, le pipeline CI désactive la base de données, ainsi il n'y a pas de test sur:
-- la connexion DB
-- les insertions
-- les interactions **SQLALCHEMY**.
-Donc toutes les lignes liées à la DB ne sont pas exécutées, d'où il peut être observé une `couverture plus faible GitHub Actions vs local`.
-Par exemple pour les tests unitaires:
-```python
-poetry run pytest tests/units --cov=App --cov-report=xml --cov-report=term-missing
-```
+
 ```text
 ========================= local tests units coverage ============================
 
@@ -364,62 +411,6 @@ TOTAL               167     50    70%
 - **Tests**: Pytest, pytest-cov
 - **CI/CD**: GitHub Actions, Hugging Face
 - **Versionnage**: Git / GitHub
-
-## Architecture du projet
-
-L’architecture du projet repose sur une séparation claire des responsabilités afin de garantir la lisibilité, la maintenabilité et l’évolutivité de l’application.
-
-### `Vue d’ensemble`
-
-                          ┌──────────────────────────────┐
-                          │        Utilisateur           │
-                          │         (Client)             │
-                          └───────────────┬──────────────┘
-                                          │  
-                                          ▼
-                    ┌────────────────────────────────────────────┐
-                    │               API FastAPI                  │
-                    │         (endpoint - POST /predict)         │
-                    └┬────────────────────┬─────────────────────┬┘
-                     |                    │                     |             
-                     ▼                    ▼                     ▼
-        ┌────────────────┐     ┌──────────────┐   ┌───────────────────────────┐     
-        │ Vérification & |     | Modèle ML    |   | Base PostgreSQL (stockage)| 
-        |    Validation  │     | - Chargement |   | - Inputs                  |
-        |                |     | - Prédiction |   | - Prédictions             |
-        └────────────────┘     └──────────────┘   └───────────────────────────┘            
-                                           ▲
-                                           | 
-                                           |                 
-                          ┌────────────────────────────────────────┐
-                          │      CI/CD – GitHub Actions            │
-                          │  - Tests unitaires                     │
-                          │  - Tests fonctionnels                  │
-                          │  - Rapport de couverture               │
-                          │  - Déploiement sur HF Space            │
-                          └────────────────────────────────────────┘
-
-
-### `Description du flux`
-
-1. Un utilisateur envoie une requête `POST /predict` à l’API
-
-2. L’API FastAPI agit comme point d’entrée:
-   - validation des données via **Pydantic**
-   - orchestration du traitement
-
-3. Le module de prédiction:
-   - charge dynamiquement le modèle ML depuis **Hugging Face Hub**
-   - génère la prédiction et la probabilité associée
-
-4. Les données d’entrée et les résultats sont enregistrés dans une base **PostgreSQL** afin d’assurer la traçabilité
-
-5. La réponse est retournée au client sous forme JSON
-
-6. Le cycle de développement, de test et de déploiement est automatisé via un pipeline **CI/CD GitHub Actions** avec déploiement sur **Hugging Face Spaces**.
-
-Cette architecture permet une exposition fiable du modèle de Machine Learning, tout en respectant les bonnes pratiques MLOps et d’ingénierie logicielle.
-
 
 ## Structure du projet
 ```text
