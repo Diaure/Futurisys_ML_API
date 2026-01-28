@@ -377,31 +377,7 @@ Il a pour rôle:
 - de réduire les risques de régression
 - de garantir la fiabilité du code avant déploiement.
 
-
-```text
-========================= local tests units coverage ============================
-
-Name              Stmts   Miss  Cover   Missing
------------------------------------------------
-App\database.py      25      4    84%   9-10, 35-36
-App\main.py          10      1    90%   13
-App\model.py         48      2    96%   55-56
-App\predict.py       52      9    83%   15-19, 62, 77-79
-App\schemas.py       32      0   100%
------------------------------------------------
-TOTAL               167     16    90%
-
-====================== GitHub Actions tests units coverage =======================
-Name              Stmts   Miss  Cover   Missing
------------------------------------------------
-App/database.py      25     10    60%   9-10, 23-32
-App/main.py          10     10     0%   1-20
-App/model.py         48      2    96%   55-56
-App/predict.py       52     28    46%   15-19, 49-85
-App/schemas.py       32      0   100%
------------------------------------------------
-TOTAL               167     50    70%
-```
+![Rapport de couverture](https://raw.githubusercontent.com/Diaure/Futurisys_ML_API/develop/Other/Rapport_couverture.PNG)
 
 ## Stack technique
 - **Langage**: Python
