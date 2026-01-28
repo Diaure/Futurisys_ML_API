@@ -322,11 +322,6 @@ Il a pour rôle:
 - de garantir la fiabilité du code avant déploiement
 - de donner un indicateur objectif de maturité logicielle.
 
-Dans ce projet, le pipeline CI désactive la base de données, ainsi il n'y a pas de test sur:
-- la connexion DB
-- les insertions
-- les interactions **SQLALCHEMY**.
-Donc toutes les lignes liées à la DB ne sont pas exécutées, d'où il peut être observé une `couverture plus faible GitHub Actions vs local`.
 ```text
 ============================== local tests coverage =====================================
 
