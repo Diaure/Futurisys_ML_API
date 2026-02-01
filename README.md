@@ -328,6 +328,11 @@ class Predictions(Base):
     model_version = Column(String)
 ```
 
+SQLAlchemy crée les tables au lancement de l’API grâce au script:
+```python
+Base.metadata.create_all(bind=engine)
+```
+
 ### `Interaction API <> Base de données`
 Lors d’un appel à l’endpoint `POST /predict`:
 - les données utilisateur sont validées via **Pydantic**
